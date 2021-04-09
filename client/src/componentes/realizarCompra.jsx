@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+
+
 import "./styles/realizarCompra.css"; 
 
 export class RealizarCompra extends React.Component {
@@ -41,12 +43,18 @@ export class RealizarCompra extends React.Component {
     };
 
     handleSubmit = async () =>{
+        localStorage.removeItem('orden');
+        localStorage.removeItem('subtot');
+        localStorage.removeItem('iva');
+        localStorage.removeItem('total');
         const datos = {
             subtot : localStorage.getItem('subtot'),
             iva : localStorage.getItem('iva'),
             total : localStorage.getItem('total'),
         };
         await axios.post(`http://localhost:5000/ordenes/agregarOrden`, datos);
+        
+        ;
     };
 
     render() {
@@ -80,10 +88,6 @@ export class RealizarCompra extends React.Component {
                        <div className="form_info">
                             <h3>Orden</h3>
                             <form>
-                                <p className="block">
-                                    <label htmlFor="orden">Orden: </label>
-                                    <input type="text" name="orden" id="orden" disabled={true}/>
-                                </p>
                                 <p>
                                     <label htmlFor="nombre">Nombre: </label>
                                     <input type="text" name="nombre" id="nombre"/>
@@ -134,7 +138,7 @@ export class RealizarCompra extends React.Component {
                        
                        <div className="detalle_orden">
                             <h3>Detalle de Orden</h3>
-                            <form onSubmit={this.handleSubmit}>
+                            <form >
                                 <table className="orden">
                                     <thead>
                                         <tr>
@@ -164,7 +168,7 @@ export class RealizarCompra extends React.Component {
                                     </tbody>                                
                                 </table>
                                 <br/>
-                                <button type="submit">Finalizar</button>
+                                <button onClick={this.handleSubmit}><a href="http://localhost:3000/">Finalizar</a></button>
                             </form>
                        </div>
                    </div>
